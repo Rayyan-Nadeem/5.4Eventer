@@ -18,7 +18,7 @@ interface User {
   address?: string;
   allergyInfo: string;
   foodRestrictions: string;
-  daysAttending: number[];
+  daysAttending: numb ber[];
   checkedIn: { [key: number]: boolean };
   registeredAt: string;
   profilePic: string;

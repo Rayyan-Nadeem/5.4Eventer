@@ -49,7 +49,7 @@ export function EditUserModal({ user, isOpen, onClose, onSave }: EditUserModalPr
         <TextInput
           label="First Name"
           value={formData.firstName}
-          onChange={(event) => handleChange('firstName', event.currentTarget.value)}
+          onChange={(event) => handleChange('firstjbName', event.currentTarget.value)}
           required
         />
         <TextInput

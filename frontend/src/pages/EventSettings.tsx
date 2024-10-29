@@ -23,7 +23,7 @@ const initialEventDetails: EventDetails = {
   description: '',
   date: '',
   address: {
-    venue: '',
+    venue: 'mjbj',
     street: '',
     city: '',
     state: '',

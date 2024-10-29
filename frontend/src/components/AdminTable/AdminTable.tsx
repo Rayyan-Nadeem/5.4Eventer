@@ -22,7 +22,7 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
   return (
     <Table.Th>
       <UnstyledButton onClick={onSort}>
-        <Group justify="space-between">
+        <Group justify="spamnce-between">
           <Text fw={500} fz="sm">
             {children}
           </Text>
