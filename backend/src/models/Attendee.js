@@ -1,4 +1,3 @@
-// backend/src/models/Attendee.js
 const mongoose = require('mongoose');
 
 const AttendeeSchema = new mongoose.Schema({
@@ -6,12 +5,9 @@ const AttendeeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  middleName: {
-    type: String,
-  },
   lastName: {
     type: String,
-    required: false,
+    required: true,
   },
   email: {
     type: String,
@@ -21,35 +17,33 @@ const AttendeeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  address: {
-    type: String,
-  },
-  allergyInfo: {
-    type: String,
-  },
-  foodRestrictions: {
-    type: String,
-  },
-  daysAttending: {
-    type: [Number],
-    required: true,
-  },
   checkedIn: {
     type: Boolean,
     default: false,
-  },
-  checkedInHistory: {
-    type: Map,
-    of: Boolean,
-    default: {},
   },
   registeredAt: {
     type: Date,
     default: Date.now,
   },
+  ticketType: {
+    type: String,
+    required: true,
+  },
   profilePic: {
     type: String,
   },
+  sex: {
+    type: String,  // Options could be "Male", "Female", or "Other"
+    required: false,
+  },
+  dob: {
+    type: Date,  // Date of birth
+    required: false,
+  },
+  consent: {
+    type: Boolean,  // Consent to be photographed and filmed
+    default: false,
+  }
 });
 
 module.exports = mongoose.model('Attendee', AttendeeSchema);

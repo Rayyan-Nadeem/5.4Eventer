@@ -12,10 +12,9 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['adin', 'Event Coordinator', 'Faculty'],
+    enum: ['admin', 'Event Coordinator', 'Faculty'],
     default: 'user',
   },
 });
 
 module.exports = mongoose.model('User', UserSchema);
-//cookies

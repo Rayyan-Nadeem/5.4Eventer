@@ -1,8 +1,10 @@
 const express = require('express');
-const { register, login } = require('../controllers/authController');
 const router = express.Router();
+const authController = require('../controllers/authController');
 
-router.post('/register', register);
-router.post('/login', login);
+// Ensure these handlers are correctly defined and imported
+router.post('/login', authController.login);
+router.post('/register', authController.register);
+router.post('/logout', authController.logout);
 
 module.exports = router;
