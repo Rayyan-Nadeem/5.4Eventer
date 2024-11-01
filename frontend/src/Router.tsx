@@ -1,49 +1,40 @@
-import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
+import React, { ReactNode } from 'react';
+import { useLocation, Navigate, Routes, Route, BrowserRouter } from 'react-router-dom';
 import { Home } from './pages/Home';
 import { ManageAttendees } from './pages/ManageAttendees';
 import { EventSettings } from './pages/EventSettings';
 import { ManageAdmin } from './pages/ManageAdmin';
 import { Login } from './pages/Login';
 import { AttendeePage } from './pages/AttendeePage';
-import { ReactElement } from 'react';
 
 interface PrivateRouteProps {
-  element: ReactElement;
+  element: ReactNode;
 }
 
 function PrivateRoute({ element }: PrivateRouteProps) {
-  const userString = sessionStorage.getItem('user');
-  const user = userString ? JSON.parse(userString) : null;
-  return user ? element : <Navigate to="/login" />;
+  // const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+  // const location = useLocation();
+
+  // if (!token) {
+  //   // If no token is found, redirect to login
+  //   return <Navigate to={`/login?redirect=${encodeURIComponent(location.pathname)}`} />;
+  // }
+
+  // If the token is present, allow access to the route
+  return <>{element}</>;
 }
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <PrivateRoute element={<Home />} />,
-  },
-  {
-    path: '/manage-attendees',
-    element: <PrivateRoute element={<ManageAttendees />} />,
-  },
-  {
-    path: '/event-settings',
-    element: <PrivateRoute element={<EventSettings />} />,
-  },
-  {
-    path: '/manage-admin',
-    element: <PrivateRoute element={<ManageAdmin />} />,
-  },
-  {
-    path: '/login',
-    element: <Login />,
-  },
-  {
-    path: '/attendee/:id',
-    element: <PrivateRoute element={<AttendeePage />} />,
-  },
-]);
-
 export function Router() {
-  return <RouterProvider router={router} />;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='manage-attendees' element={<PrivateRoute element={<ManageAttendees />} />} />
+        <Route path='event-settings' element={<PrivateRoute element={<EventSettings />} />} />
+        <Route path='manage-admin' element={<PrivateRoute element={<ManageAdmin />} />} />
+        <Route path='login' element={<Login />} />
+        <Route path='attendee/:id' element={<PrivateRoute element={<AttendeePage />} />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }

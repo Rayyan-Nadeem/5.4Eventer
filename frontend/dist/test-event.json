@@ -1,0 +1,23 @@
+{
+    "convention": {
+      "id": "abc123",
+      "name": "Tech Innovators Convention 2024",
+      "description": "An annual convention showcasing the latest innovations in technology.",
+      "date": "2024-09-15T09:00:00Z",
+      "address": {
+        "venue": "Tech Expo Center",
+        "street": "456 Innovation Way",
+        "city": "Techville",
+        "state": "CA",
+        "postalCode": "90210",
+        "country": "USA"
+      },
+      "organizer": {
+        "name": "Tech Innovators Inc.",
+        "email": "contact@techinnovators.com",
+        "phone": "555-6789",
+        "website": "https://techinnovators.com"
+      }
+    }
+  }
+  

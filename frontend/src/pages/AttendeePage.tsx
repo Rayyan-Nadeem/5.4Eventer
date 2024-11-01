@@ -4,22 +4,9 @@ import { Nav } from '../components/Nav/Nav';
 import { AttendeeCard } from '../components/AttendeeCard/AttendeeCard';
 import { EditUserModal } from '../components/EditUserModal/EditUserModal';
 import { Text } from '@mantine/core';
+import { Attendee } from '../components/types/User';
 
-interface Attendee {
-  id: string;
-  firstName: string;
-  middleName?: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  address: string;
-  allergyInfo: string;
-  foodRestrictions: string;
-  daysAttending: number[];
-  checkedIn: { [key: number]: boolean };
-  registeredAt: string;
-  profilePic: string;
-}
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export function AttendeePage() {
   const { id } = useParams<{ id: string }>();
@@ -27,12 +14,9 @@ export function AttendeePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    fetch('/test-users.json')
+    fetch(`${backendUrl}/api/attendees/${id}`)
       .then((response) => response.json())
-      .then((data) => {
-        const foundAttendee = data.find((attendee: Attendee) => attendee.id === id);
-        setAttendee(foundAttendee);
-      })
+      .then((data) => setAttendee(data))
       .catch((error) => console.error('Error fetching attendee data:', error));
   }, [id]);
 
@@ -40,32 +24,45 @@ export function AttendeePage() {
     setIsModalOpen(true);
   };
 
-  const handleSaveUser = (updatedUser: Attendee) => {
-    setAttendee(updatedUser);
+  const handleSaveUser = (updatedAttendee: Attendee) => {
+    setAttendee(updatedAttendee);
     setIsModalOpen(false);
+  };
+
+  const handleCheckIn = () => {
+    if (attendee) {
+      fetch(`${backendUrl}/api/attendees/${attendee._id}/checkin`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => response.json())
+        .then((updatedAttendee) => setAttendee(updatedAttendee))
+        .catch((error) => console.error('Error updating check-in status:', error));
+    }
   };
 
   if (!attendee) {
     return <Text>Loading...</Text>;
   }
 
-  const fullName = `${attendee.firstName} ${attendee.middleName || ''} ${attendee.lastName}`.trim();
+  const fullName = `${attendee.firstName} ${attendee.lastName}`.trim();
 
   return (
     <div className="app-container">
       <Nav />
       <div className="content-container">
         <AttendeeCard
-          avatar={attendee.profilePic}
+          avatar={attendee.profilePic || 'default-avatar.png'}
           name={fullName}
           email={attendee.email}
-          role="Convention Attendee"
           phone={attendee.phone}
-          address={attendee.address}
-          allergyInfo={attendee.allergyInfo}
-          foodRestrictions={attendee.foodRestrictions}
-          daysAttending={attendee.daysAttending}
           registeredAt={attendee.registeredAt}
+          checkedIn={attendee.checkedIn}
+          ticketType={attendee.ticketType}
+          consent={attendee.consent}
+          onCheckIn={handleCheckIn}
           onEdit={handleEditClick}
         />
         <EditUserModal

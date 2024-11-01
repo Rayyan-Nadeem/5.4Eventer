@@ -1,0 +1,38 @@
+[
+  {
+    "username": "admin",
+    "password": "admin123",
+    "role": "admin",
+    "profilePic": "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png"
+  },
+  {
+    "username": "user1",
+    "password": "password1",
+    "role": "Event Coordinator",
+    "profilePic": "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-2.png"
+  },
+  {
+    "username": "user2",
+    "password": "password2",
+    "role": "Faculty",
+    "profilePic": "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-3.png"
+  },
+  {
+    "username": "user3",
+    "password": "password3",
+    "role": "Event Coordinator",
+    "profilePic": "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-4.png"
+  },
+  {
+    "username": "user4",
+    "password": "password4",
+    "role": "Faculty",
+    "profilePic": "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png"
+  },
+  {
+    "username": "user5",
+    "password": "password5",
+    "role": "Faculty",
+    "profilePic": "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-6.png"
+  }
+]

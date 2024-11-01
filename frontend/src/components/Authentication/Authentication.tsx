@@ -2,50 +2,49 @@ import React, { useState } from 'react';
 import {
   TextInput,
   PasswordInput,
-  Checkbox,
-  Anchor,
   Paper,
   Title,
   Text,
   Container,
-  Group,
   Button,
 } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Remove unused AxiosError import
 import classes from './Authentication.module.css';
-
-// Dummy data for demonstration
-const users = [
-  {
-    username: 'admin',
-    password: 'admin123',
-    role: 'admin'
-  },
-  {
-    username: 'user',
-    password: 'password',
-    role: 'user'
-  },
-  {
-    username: 'user2',
-    password: 'password2',
-    role: 'user'
-  },
-];
 
 export function Authentication() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | null>(null); // Update type
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    const user = users.find(u => u.username === username && u.password === password);
-    if (user) {
-      sessionStorage.setItem('user', JSON.stringify({ username: user.username, role: user.role }));
-      navigate('/');
-    } else {
-      setError('Invalid credentials');
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || ''; // Ensure backendUrl is defined
+
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post(`${backendUrl}/api/auth/login`, {
+        username,
+        password,
+      });
+
+      console.log(response.data); // Log the response to inspect it
+
+      const { token } = response.data;
+      if (token) {
+        localStorage.setItem('token', token);
+
+        const redirect = new URLSearchParams(window.location.search).get('redirect') || '/';
+        navigate(redirect);
+      } else {
+        setError('No token received');
+      }
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || 'Login failed');
+      } else {
+        console.error('Unexpected error:', err); // Log unexpected errors
+        setError('An unexpected error occurred');
+      }
     }
   };
 
@@ -54,6 +53,10 @@ export function Authentication() {
       <Title ta="center" className={classes.title}>
         Welcome back!
       </Title>
+
+      <Text size="lg" ta="center" mt="lg">
+      The QR code is intended solely for convention check-in purposes. Login is for event staff only.       
+      </Text>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
         {error && <Text color="red" ta="center">{error}</Text>}
@@ -72,8 +75,6 @@ export function Authentication() {
           value={password}
           onChange={(event) => setPassword(event.currentTarget.value)}
         />
-        <Group justify="space-between" mt="lg">
-        </Group>
         <Button fullWidth mt="xl" onClick={handleLogin}>
           Sign in
         </Button>
