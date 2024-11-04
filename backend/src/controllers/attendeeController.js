@@ -2,9 +2,12 @@ const QRCode = require('qrcode');
 const AWS = require('aws-sdk');
 const Attendee = require('../models/Attendee');
 const transporter = require('../mailer');
+
 const path = require('path');
+
 const { Parser } = require('json2csv');
 const fs = require('fs');
+
 const Handlebars = require('handlebars');
 
 // Configure AWS S3
