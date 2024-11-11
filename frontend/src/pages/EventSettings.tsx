@@ -50,30 +50,30 @@ export function EventSettings() {
         <Container my="md">
           <Grid visibleFrom='sm'>
             <Grid.Col span={6}>
-              <Card shadow="sm" padding="lg">
-                <Text size="xl" ta="center" fw={700}>
-                  Welcome to the event settings page!
-                </Text>
-                <Text size="md" mt="md">
-                  <strong>Event Date</strong>: May 1 – 3, 2025
-                </Text>
-                <Text size="md" mt="sm">
+            <Card shadow="sm" padding="lg">
+              <Text size="xl" ta="center" fw={700}>
+                Welcome to the event settings page!
+              </Text>
+              <Text size="md" mt="md">
+                <strong>Event Date</strong>: May 1 – 3, 2025
+              </Text>
+              <Text size="md" mt="sm">
                 <strong>Venue:</strong> Tuscany Suites & Casino
-                </Text>
-                <Text size="md" mt="sm">
-                <strong>Address:</strong> 255 E Flamingo RdLas Vegas, NV 89119
-                </Text>
-                <Text size="md" mt="sm">
+              </Text>
+              <Text size="md" mt="sm">
+                <strong>Address:</strong> 123 Main St, Raleigh, NC 27601
+              </Text>
+              <Text size="md" mt="sm">
                 <strong>Time:</strong> Full Day Event
-                </Text>
-                <Text size="md" mt="sm">
-                <strong> Registration Deadline:</strong> TBA
-                </Text>
-              </Card>
-              <Button mt="md" size='xl' fullWidth onClick={CheckoutAll} loading={loadingCheckout}>
-                <p>CheckOut All</p>
-              </Button>
-            </Grid.Col>
+              </Text>
+              <Text size="md" mt="sm">
+                <strong>Registration Deadline:</strong> TBA
+              </Text>
+            </Card>
+            <Button mt="md" size='xl' fullWidth onClick={CheckoutAll} loading={loadingCheckout}>
+              <p>CheckOut All</p>
+            </Button>
+          </Grid.Col>
             <Grid.Col span={6}>
               <ProgressCardColored />
               <Text size="xl" ta="center" fw={700} mt="lg">
