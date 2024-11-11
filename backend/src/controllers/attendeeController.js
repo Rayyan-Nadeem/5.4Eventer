@@ -2,9 +2,12 @@ const QRCode = require('qrcode');
 const AWS = require('aws-sdk');
 const Attendee = require('../models/Attendee');
 const transporter = require('../mailer');
+
 const path = require('path');
+
 const { Parser } = require('json2csv');
 const fs = require('fs');
+
 const Handlebars = require('handlebars');
 
 // Configure AWS S3
@@ -175,6 +178,7 @@ const getAttendees = async (req, res) => {
     res.json(attendees);
   } catch (error) {
     res.status(500).json({ error: error.message });
+
   }
 };
 
@@ -182,7 +186,7 @@ const getAttendeeById = async (req, res) => {
   try {
     const attendee = await Attendee.findById(req.params.id);
     if (!attendee) {
-      return res.status(404).json({ error: 'Attendee not found' });
+      return res.status(404).json({ error: 'Attendee not found!' });
     }
     res.json(attendee);
   } catch (error) {
@@ -201,7 +205,7 @@ const updateAttendee = async (req, res) => {
     }
     const attendee = await Attendee.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!attendee) {
-      return res.status(404).json({ error: 'Attendee not found' });
+      return res.status(404).json({ error: 'Attendee not found!' });
     }
     res.json(attendee);
   } catch (error) {

@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const AttendeeSchema = new mongoose.Schema({
   firstName: {
     type: String,
+    
     required: true,
   },
   lastName: {

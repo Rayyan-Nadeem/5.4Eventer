@@ -5,6 +5,7 @@ const {
   getAttendeeById,
   updateAttendee,
   deleteAttendee,
+
   checkInAttendee,
   checkOutAllAttendees,
   generateCSV,
@@ -26,4 +27,6 @@ router.post('/generate-csv', generateCSV);
 router.post('/get-qrcode', getQRCode);
 router.post('/gform', handleGForm);
 
+
 module.exports = router;
+
