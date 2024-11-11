@@ -9,6 +9,7 @@ const transporter = nodemailer.createTransport({
     pass: process.env.MAIL_PASSWORD,
   },
   tls: {
+    
     ciphers: 'SSLv3'
     
   }
