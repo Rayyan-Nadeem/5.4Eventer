@@ -10,7 +10,6 @@ import '../App.css';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-
 export function EventSettings() {
   const [loadingCheckout, setLoadingCheckout] = useState(false);
   const [loadingReport, setLoadingReport] = useState(false);
@@ -58,10 +57,10 @@ export function EventSettings() {
                 <strong>Event Date</strong>: May 1 – 3, 2025
               </Text>
               <Text size="md" mt="sm">
-                <strong>Venue:</strong> Tuscany Suites & Casino
+                <strong>Venue:</strong> PNC Arena
               </Text>
               <Text size="md" mt="sm">
-                <strong>Address:</strong> 123 Main St, Raleigh, NC 27601
+                <strong>Address:</strong> 1400 Edwards Mill Rd, Raleigh, NC 27607
               </Text>
               <Text size="md" mt="sm">
                 <strong>Time:</strong> Full Day Event
@@ -94,10 +93,7 @@ export function EventSettings() {
             </Grid.Col>
           </Grid>
 
-
-
           <Grid hiddenFrom='sm'>
-            {/* Full width for small screens (span 12), half-width for medium and larger screens (span 6) */}
             <Grid.Col span={{ base: 12, md: 6, lg: 3 }}>
               <Card shadow="sm" padding="lg">
                 <Text size="xl" ta="center" fw={700}>
@@ -107,10 +103,10 @@ export function EventSettings() {
                   <strong>Event Date</strong>: May 1 – 3, 2025
                 </Text>
                 <Text size="md" mt="sm">
-                  <strong>Venue:</strong> Tuscany Suites & Casino
+                  <strong>Venue:</strong> Beastcon Arena
                 </Text>
                 <Text size="md" mt="sm">
-                  <strong>Address:</strong> 255 E Flamingo Rd, Las Vegas, NV 89119
+                  <strong>Address:</strong> 456 Arena Blvd, New York, NY 10001
                 </Text>
                 <Text size="md" mt="sm">
                   <strong>Time:</strong> Full Day Event
