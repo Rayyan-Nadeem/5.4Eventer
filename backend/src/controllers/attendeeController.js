@@ -2,35 +2,18 @@ const QRCode = require('qrcode');
 const AWS = require('aws-sdk');
 const Attendee = require('../models/Attendee');
 const transporter = require('../mailer');
-
 const path = require('path');
-
 const { Parser } = require('json2csv');
 const fs = require('fs');
-
 const Handlebars = require('handlebars');
 
 // Configure AWS S3
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   region: process.env.AWS_REGION,
 });
 
-const getTicketTypeText = (ticketType) => {
-  
-  switch (ticketType) {
-    case 'Gold':
-      return 'Gold Sponsorship';
-    case 'Platinum':
-      return 'Platinum Sponsorship';
-    case 'Coffee':
-      return 'Coffee/Snack Break';
-    default:
-      return 'Attendee';
-  }
-};
 
 const sendEmailWithQRCode = async (attendee) => {
   // Read the Handlebars template file
@@ -44,7 +27,7 @@ const sendEmailWithQRCode = async (attendee) => {
   const data = {
     name: attendee.firstName + ' ' + attendee.lastName,
     UUID: attendee._id,
-    ticketType: getTicketTypeText(attendee.ticketType),
+    ticketType: attendee.ticketType,
     email: attendee.email,
     phone: attendee.phone,
     qrcodeurl: attendee.qrCode
@@ -55,9 +38,10 @@ const sendEmailWithQRCode = async (attendee) => {
   const mailOptions = {
     from: process.env.MAIL_DEFAULT_SENDER,
     to: attendee.email,
-    subject: 'Your QR Code for LeTip National Convention',
+    subject: process.env.MAIL_SUBJECT || 'Your QR Code for Beastcon',
     html: emailHtml,
   };
+  
 
   // Throttle configuration
   const throttleDelay = 1000; // Delay in milliseconds
@@ -180,7 +164,6 @@ const getAttendees = async (req, res) => {
     res.json(attendees);
   } catch (error) {
     res.status(500).json({ error: error.message });
-
   }
 };
 
@@ -188,7 +171,7 @@ const getAttendeeById = async (req, res) => {
   try {
     const attendee = await Attendee.findById(req.params.id);
     if (!attendee) {
-      return res.status(404).json({ error: 'Attendee not found!' });
+      return res.status(404).json({ error: 'Attendee not found' });
     }
     res.json(attendee);
   } catch (error) {
@@ -207,7 +190,7 @@ const updateAttendee = async (req, res) => {
     }
     const attendee = await Attendee.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!attendee) {
-      return res.status(404).json({ error: 'Attendee not found!' });
+      return res.status(404).json({ error: 'Attendee not found' });
     }
     res.json(attendee);
   } catch (error) {
@@ -357,83 +340,6 @@ const getTicketType = (sponsorshipOpportunity) => {
 };
 
 
-const handleGForm = async (req, res) => {
-  try {
-    // Log the payload for testing
-    console.log('GForm Payload:', req.body);
-
-    // Helper function to process consent fields
-    function processConsent(consentValue) {
-      return consentValue === '1';
-    }
-
-    const attendees = [];
-
-    // Process the first attendee manually
-    attendees.push({
-      firstName: req.body['Name (First)']?.trim() || '',
-      lastName: req.body['Name (Last)'] || '',
-      email: req.body['Email'] || '',
-      phone: req.body['Phone']?.replace(/[^\d]/g, '') || '', // Clean phone number
-      checkedIn: false,
-      ticketType: getTicketType(req.body['Select Your Sponsorship Opportunity']),
-      company: req.body['Company'] || '',
-      category: req.body['Category'] || '',
-      letipChapter: req.body['LeTip Chapter'] || '',
-      foodRestrictions: req.body['List all food allergies or restrictions below:'] || '',
-      profilePic: '', // No field for profilePic in the provided data
-      historicalFigureLunch: req.body['If you could have lunch with any historical figure, who would it be and why?'] || '',
-      Consent: processConsent(req.body['Photography & Video Consent (Consent)']),
-      registerer: ''
-    });
-
-    // Process subsequent attendees
-    for (let i = 2; i <= 10; i++) {
-      if (req.body[`Attendee Email (${i})`]) {
-        attendees.push({
-          firstName: req.body[`Attendee Name (${i}) (First)`] || '',
-          lastName: req.body[`Attendee Name (${i}) (Last)`] || '',
-          email: req.body[`Attendee Email (${i})`] || '',
-          phone: req.body[`Attendee Phone (${i})`] || '',
-          checkedIn: false,
-          ticketType: 'Attendee', // Default to Bronze for additional attendees
-          company: req.body[`Attendee Company (${i})`] || '',
-          category: req.body[`LeTip Category (${i})`] || '',
-          letipChapter: req.body[`LeTip Chapter (${i})`] || '',
-          foodRestrictions: req.body[`List all food allergies or restrictions below (${i}):`] || '',
-          profilePic: '', // No field for profilePic in the provided data
-          historicalFigureLunch: req.body[`If you could have lunch with any historical figure, who would it be and why? (${i})`] || '',
-          Consent: processConsent(req.body[`Photography & Video Consent (${i}) (Consent)`]),
-          registerer: req.body['Created By'] || '', // Assuming Created By is the ID of the registerer
-        });
-      }
-    }
-
-    console.log('Processed Attendees:', attendees);
-
-    // Create a dummy req and res for createAttendee
-    const dummyReq = { body: { attendees } };
-    const dummyRes = {
-      status: (code) => ({
-        json: (data) => {
-          // Dummy response handling
-          console.log(`Response status: ${code}`, data);
-        }
-      })
-    };
-
-    // Call createAttendee with the dummy req and res
-    await createAttendee(dummyReq, dummyRes);
-
-    // Return a success response
-    res.json({ success: true, message: 'Attendees processed and created successfully' });
-  } catch (error) {
-    console.error('Error processing GForm data:', error);
-    res.status(500).json({ success: false, error: 'Internal Server Error' });
-  }
-};
-
-
 module.exports = {
   createAttendee,
   getAttendees,
@@ -445,5 +351,4 @@ module.exports = {
   generateCSV,
   getQRCode,
   gettickettypes,
-  handleGForm,  // Add handleGForm to exports
 };
