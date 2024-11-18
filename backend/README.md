@@ -1,4 +1,4 @@
-# Letip Convention App - Backend
+# Eventer Convention App - Backend
 
 ## Table of Contents
 
@@ -12,7 +12,7 @@
 
 ## Introduction
 
-This is the backend part of the Letip Convention App, built using Node.js, Express, and MongoDB.
+This is the backend part of the Eventer Convention App, built using Node.js, Express, and MongoDB.
 
 ## Prerequisites
 
@@ -57,7 +57,7 @@ backend/
 
     ```env
     PORT=5001
-    MONGO_URI=mongodb://localhost:27017/letip-convention
+    MONGO_URI=mongodb://localhost:27017/Eventer-convention
     ```
 
 ## Running the Backend

@@ -16,7 +16,7 @@ const users = [
   },
   {
     username: 'scott',
-    password: bcrypt.hashSync('LeTip5569', 10), // Hash for 'password2'
+    password: bcrypt.hashSync('password2', 10), // Hash for 'password2'
     role: 'user',
   },
 ];

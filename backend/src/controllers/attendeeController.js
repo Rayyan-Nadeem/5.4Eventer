@@ -112,7 +112,7 @@ const createAttendee = async (req, res) => {
 
     // Generate QR codes and save them to S3
     const qrCodePromises = attendees.map((attendee) => {
-      const qrCodeUrl = `https://letipconvention.com/attendee/${attendee._id}`;
+      const qrCodeUrl = `localhost.com/attendee/${attendee._id}`;
 
       return new Promise((resolve, reject) => {
         QRCode.toDataURL(qrCodeUrl, async (err, url) => {
