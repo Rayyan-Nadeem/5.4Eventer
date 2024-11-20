@@ -9,7 +9,7 @@ import {
   Button,
 } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Remove unused AxiosError import
+import axios from 'axios'; // Import axios
 import classes from './Authentication.module.css';
 
 export function Authentication() {
@@ -26,13 +26,12 @@ export function Authentication() {
         username,
         password,
       });
-
+  
       console.log(response.data); // Log the response to inspect it
-
-      const { token } = response.data;
+  
+      const { token } = response.data;  // This should be the token returned from the backend
       if (token) {
-        localStorage.setItem('token', token);
-
+        localStorage.setItem('token', token);  // Store the token in localStorage
         const redirect = new URLSearchParams(window.location.search).get('redirect') || '/';
         navigate(redirect);
       } else {
@@ -42,11 +41,13 @@ export function Authentication() {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.message || 'Login failed');
       } else {
-        console.error('Unexpected error:', err); // Log unexpected errors
+        console.error('Unexpected error:', err);  // Log unexpected errors
         setError('An unexpected error occurred');
       }
     }
   };
+  
+  
 
   return (
     <Container size={420} my={40}>
@@ -55,7 +56,7 @@ export function Authentication() {
       </Title>
 
       <Text size="lg" ta="center" mt="lg">
-      The QR code is intended solely for convention check-in purposes. Login is for event staff only.       
+        The QR code is intended solely for convention check-in purposes. Login is for event staff only.       
       </Text>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">

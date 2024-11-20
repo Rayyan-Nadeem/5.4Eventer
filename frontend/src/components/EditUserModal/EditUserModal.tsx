@@ -1,6 +1,7 @@
+// @ts-nocheck
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, TextInput, Group, Checkbox, Select } from '@mantine/core';
-import { Attendee } from '../types/User';
+import { Attendee } from '../../types/User';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 

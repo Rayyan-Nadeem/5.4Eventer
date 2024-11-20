@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const jwt = require('jsonwebtoken');  // Add this to import jwt
 
 // Hardcoded users for testing
 const users = [
@@ -33,7 +33,6 @@ exports.register = async (req, res) => {
   }
 };
 
-
 exports.login = async (req, res) => {
   const { username, password } = req.body;
   try {
@@ -47,14 +46,14 @@ exports.login = async (req, res) => {
       expiresIn: '72h',  // 72-hour expiration
     });
 
-    res.cookie('token', token, { httpOnly: true, maxAge: 72 * 60 * 60 * 1000 }); // 72 hours in milliseconds
-    res.json({ token });
+    // Ensure token is included in the response
+    res.json({ token });  // Send the token directly in the response
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
+
 exports.logout = (req, res) => {
-  res.clearCookie('token');
   res.json({ message: 'Logged out successfully' });
 }

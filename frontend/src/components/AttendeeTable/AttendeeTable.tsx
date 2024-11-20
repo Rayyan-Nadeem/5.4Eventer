@@ -1,8 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Badge, Table, Group, Text, ActionIcon, Anchor, UnstyledButton, Center, rem, Modal, Button, TextInput } from '@mantine/core';
+import {
+  Avatar,
+  Badge,
+  Table,
+  Group,
+  Text,
+  ActionIcon,
+  Anchor,
+  UnstyledButton,
+  Center,
+  rem,
+  Modal,
+  Button,
+  TextInput,
+} from '@mantine/core';
 import { IconPencil, IconTrash, IconChevronDown, IconChevronUp, IconSelector } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
-import { Attendee as User } from '../types/User';
+import { Attendee as User } from '../../types/User';
 import { EditUserModal } from '../EditUserModal/EditUserModal';
 import axios from 'axios';
 
@@ -43,8 +57,8 @@ function sortData(data: User[], payload: { sortBy: keyof User | null; reversed: 
   return [...data].sort((a, b) => {
     if (sortBy === 'registeredAt') {
       return payload.reversed
-        ? new Date(b[sortBy]).getTime() - new Date(a[sortBy]).getTime()
-        : new Date(a[sortBy]).getTime() - new Date(b[sortBy]).getTime();
+        ? new Date(b[sortBy] as string).getTime() - new Date(a[sortBy] as string).getTime()
+        : new Date(a[sortBy] as string).getTime() - new Date(b[sortBy] as string).getTime();
     } else if (sortBy === 'checkedIn') {
       return payload.reversed
         ? Number(b[sortBy]) - Number(a[sortBy])
@@ -75,7 +89,8 @@ export function AttendeeTable({ refreshData }: { refreshData: boolean }) {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    axios.get(`${backendUrl}/api/attendees`)
+    axios
+      .get(`${backendUrl}/api/attendees`)
       .then((response) => {
         setUsers(response.data);
         setSortedUsers(response.data);
@@ -108,7 +123,8 @@ export function AttendeeTable({ refreshData }: { refreshData: boolean }) {
 
   const confirmDelete = () => {
     if (userToDelete) {
-      axios.delete(`${backendUrl}/api/attendees/${userToDelete}`)
+      axios
+        .delete(`${backendUrl}/api/attendees/${userToDelete}`)
         .then(() => {
           setUsers(users.filter((user) => user._id !== userToDelete));
           setSortedUsers(sortedUsers.filter((user) => user._id !== userToDelete));
@@ -218,8 +234,12 @@ export function AttendeeTable({ refreshData }: { refreshData: boolean }) {
       >
         <Text>Are you sure you want to delete this attendee?</Text>
         <Group ta="right" mt="md" align="center" justify="flex-end">
-          <Button variant="default" onClick={() => setIsDeleteModalOpen(false)}>Cancel</Button>
-          <Button color="red" onClick={confirmDelete}>Delete</Button>
+          <Button variant="default" onClick={() => setIsDeleteModalOpen(false)}>
+            Cancel
+          </Button>
+          <Button color="red" onClick={confirmDelete}>
+            Delete
+          </Button>
         </Group>
       </Modal>
     </>
